@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About - CN Project 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pine: #1a3a2a;
+      --forest: #2d5a3d;
+      --sage: #4a7c5e;
+      --fern: #6aab7e;
+      --mint: #a8d5b0;
+      --foam: #d4edd9;
+      --cream: #f5f9f5;
+      --ink: #0e1f16;
+      --muted: #4a6355;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(245, 249, 245, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--foam);
+    }
+
+    nav .logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--sage);
+      letter-spacing: 0.05em;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    nav ul a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover, nav ul a.active { color: var(--forest); }
+
+    .page-header {
+      padding: 9rem 3rem 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      border-bottom: 1px solid var(--foam);
+    }
+
+    .page-tag {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--fern);
+      background: var(--foam);
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.08em;
+    }
+
+    .page-header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      color: var(--pine);
+      margin-bottom: 1rem;
+    }
+
+    .page-header p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 550px;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    .content {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 3rem 6rem;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .member-card {
+      background: white;
+      border: 1px solid var(--foam);
+      border-radius: 12px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .member-card:hover {
+      border-color: var(--mint);
+      transform: translateY(-2px);
+    }
+
+    .member-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--fern), transparent);
+    }
+
+    .member-initials {
+      width: 52px; height: 52px;
+      background: var(--forest);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      color: white;
+      margin-bottom: 1.2rem;
+    }
+
+    .member-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.25rem;
+      color: var(--pine);
+      margin-bottom: 0.3rem;
+    }
+
+    .member-role {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--fern);
+      margin-bottom: 1rem;
+    }
+
+    .member-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    .about-section {
+      margin-bottom: 3rem;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--fern);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem;
+      color: var(--pine);
+      margin-bottom: 1rem;
+    }
+
+    .section-text {
+      color: var(--muted);
+      font-size: 0.97rem;
+      line-height: 1.75;
+      font-weight: 300;
+      max-width: 620px;
+    }
+
+    .stack-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1.2rem;
+    }
+
+    .stack-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      background: var(--foam);
+      color: var(--forest);
+      padding: 0.35rem 0.9rem;
+      border-radius: 5px;
+      border: 1px solid var(--mint);
+    }
+
+    footer {
+      background: var(--pine);
+      color: var(--foam);
+      text-align: center;
+      padding: 2.5rem;
+      font-size: 0.85rem;
+      font-family: 'DM Mono', monospace;
+    }
+
+    footer a { color: var(--mint); text-decoration: none; }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      nav ul { gap: 1.2rem; }
+      .page-header, .content { padding-left: 1.5rem; padding-right: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <span class="logo">CN-PROJECT-1</span>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="networking.html">Networking</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <span class="page-tag">About the Team</span>
+    <h1>Who Built This</h1>
+    <p>A quick overview of our team, how we split up the work, and what tools we used to get this project off the ground.</p>
+  </div>
+
+  <div class="content">
+
+    <div class="about-grid" style="grid-template-columns: minmax(280px, 480px);">
+      <div class="member-card">
+        <div class="member-initials">HK</div>
+        <div class="member-name">Hasmika Kesineni</div>
+        <div class="member-role">Solo - All Roles</div>
+        <div class="member-desc">Handled everything end to end - GitHub Pages setup, HTTPS enforcement, DNS lookups, website design, and the full project report.</div>
+      </div>
+    </div>
+
+    <div class="about-section">
+      <div class="section-label">Project Overview</div>
+      <div class="section-title">What We Built</div>
+      <p class="section-text">This is a three-page static website deployed on GitHub Pages for Computer Networking Project 1. The goal was to get a site live and then document the networking infrastructure behind it - DNS resolution, IP addressing, HTTP/HTTPS headers, and the security features that GitHub Pages includes by default.</p>
+      <p class="section-text" style="margin-top: 1rem;">The stack is intentionally simple: plain HTML and CSS, no build tools or frameworks. That kept the focus on the networking side rather than frontend tooling.</p>
+    </div>
+
+    <div class="about-section">
+      <div class="section-label">Tech Stack</div>
+      <div class="section-title">Tools and Hosting</div>
+      <p class="section-text">Everything we used to build and deploy this project:</p>
+      <div class="stack-row">
+        <span class="stack-tag">HTML5</span>
+        <span class="stack-tag">CSS3</span>
+        <span class="stack-tag">GitHub Pages</span>
+        <span class="stack-tag">HTTPS / TLS</span>
+        <span class="stack-tag">nslookup</span>
+        <span class="stack-tag">curl</span>
+        <span class="stack-tag">Browser DevTools</span>
+        <span class="stack-tag">Let's Encrypt</span>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>Hasmika Kesineni &nbsp;&mdash;&nbsp; Computer Networking Project 1 &nbsp;&mdash;&nbsp; Spring 2026</p>
+    <p style="margin-top: 0.5rem;"><a href="https://github.com">GitHub Repo</a></p>
+  </footer>
+
+</body>
+</html>

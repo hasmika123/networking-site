@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CN Project 1 - Build & Deploy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pine: #1a3a2a;
+      --forest: #2d5a3d;
+      --sage: #4a7c5e;
+      --fern: #6aab7e;
+      --mint: #a8d5b0;
+      --foam: #d4edd9;
+      --cream: #f5f9f5;
+      --ink: #0e1f16;
+      --muted: #4a6355;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      background: rgba(245, 249, 245, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--foam);
+    }
+
+    nav .logo {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--sage);
+      letter-spacing: 0.05em;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    nav ul a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+      letter-spacing: 0.02em;
+    }
+
+    nav ul a:hover { color: var(--forest); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 7rem 3rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      right: -80px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 55vw;
+      height: 55vw;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, var(--foam) 0%, transparent 70%);
+      z-index: 0;
+    }
+
+    .hero-text { position: relative; z-index: 1; }
+
+    .hero-tag {
+      display: inline-block;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--fern);
+      background: var(--foam);
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.08em;
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      line-height: 1.08;
+      color: var(--pine);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--sage);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 440px;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.8rem 1.8rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--forest);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--pine);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--forest);
+      border: 1.5px solid var(--mint);
+    }
+
+    .btn-ghost:hover {
+      background: var(--foam);
+    }
+
+    .hero-visual {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .terminal {
+      background: var(--pine);
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 420px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      box-shadow: 0 24px 60px rgba(26, 58, 42, 0.25);
+      animation: float 5s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .terminal-bar {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 1.2rem;
+    }
+
+    .dot {
+      width: 11px; height: 11px;
+      border-radius: 50%;
+    }
+
+    .dot-red { background: #ff5f57; }
+    .dot-yellow { background: #febc2e; }
+    .dot-green { background: #28c840; }
+
+    .terminal-line {
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+
+    .t-prompt { color: var(--fern); }
+    .t-cmd { color: var(--mint); }
+    .t-comment { color: var(--sage); }
+    .t-output { color: #8fa99a; }
+    .t-highlight { color: #a8d5b0; }
+
+    /* SECTIONS */
+    section {
+      padding: 6rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--fern);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      color: var(--pine);
+      margin-bottom: 1.2rem;
+    }
+
+    .section-desc {
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      max-width: 560px;
+      font-weight: 300;
+      margin-bottom: 3rem;
+    }
+
+    /* TEAM CARDS */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .team-card {
+      background: white;
+      border: 1px solid var(--foam);
+      border-radius: 10px;
+      padding: 1.8rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .team-card:hover {
+      border-color: var(--mint);
+      transform: translateY(-3px);
+    }
+
+    .team-avatar {
+      width: 48px; height: 48px;
+      background: var(--foam);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .team-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      color: var(--pine);
+      margin-bottom: 0.3rem;
+    }
+
+    .team-role {
+      font-size: 0.82rem;
+      color: var(--fern);
+      font-family: 'DM Mono', monospace;
+    }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--foam);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* CONCEPTS PAGE SPECIFIC */
+    .concepts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .concept-card {
+      background: white;
+      border: 1px solid var(--foam);
+      border-radius: 12px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .concept-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--fern), var(--mint));
+    }
+
+    .concept-card:hover { border-color: var(--mint); }
+
+    .concept-icon {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: white;
+      background: var(--forest);
+      padding: 0.3rem 0.7rem;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 1rem;
+    }
+
+    .concept-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      color: var(--pine);
+      margin-bottom: 0.8rem;
+    }
+
+    .concept-text {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--pine);
+      color: var(--foam);
+      text-align: center;
+      padding: 2.5rem;
+      font-size: 0.85rem;
+      font-family: 'DM Mono', monospace;
+    }
+
+    footer a {
+      color: var(--mint);
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 6rem 1.5rem 4rem;
+        gap: 3rem;
+      }
+      nav { padding: 1rem 1.5rem; }
+      nav ul { gap: 1.2rem; }
+      section { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <span class="logo">CN-PROJECT-1</span>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="networking.html">Networking</a></li>
+      <li><a href="about.html">About</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-text">
+      <span class="hero-tag">CS Networking - Spring 2026</span>
+      <h1>Build &amp; Deploy a <em>Public</em> Website</h1>
+      <p>This project demonstrates how web infrastructure actually works - from DNS resolution and IP addressing to HTTPS protocols and security headers.</p>
+      <div class="hero-cta">
+        <a href="networking.html" class="btn btn-primary">View Networking Concepts</a>
+        <a href="about.html" class="btn btn-ghost">Meet the Team</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="dot dot-red"></div>
+          <div class="dot dot-yellow"></div>
+          <div class="dot dot-green"></div>
+        </div>
+        <div class="terminal-line"><span class="t-prompt">$ </span><span class="t-cmd">nslookup username.github.io</span></div>
+        <div class="terminal-line"><span class="t-output">Server: 8.8.8.8</span></div>
+        <div class="terminal-line"><span class="t-output">Address: 8.8.8.8#53</span></div>
+        <div class="terminal-line">&nbsp;</div>
+        <div class="terminal-line"><span class="t-highlight">Non-authoritative answer:</span></div>
+        <div class="terminal-line"><span class="t-output">Name: username.github.io</span></div>
+        <div class="terminal-line"><span class="t-output">Address: 185.199.108.153</span></div>
+        <div class="terminal-line">&nbsp;</div>
+        <div class="terminal-line"><span class="t-prompt">$ </span><span class="t-cmd">curl -I https://username.github.io</span></div>
+        <div class="terminal-line"><span class="t-highlight">HTTP/2 200</span></div>
+        <div class="terminal-line"><span class="t-output">strict-transport-security: ...</span></div>
+        <div class="terminal-line"><span class="t-output">x-content-type-options: nosniff</span></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- TEAM -->
+  <section id="team">
+    <div class="section-label">01 - Team</div>
+    <h2 class="section-title">The Group</h2>
+    <p class="section-desc">Computer Networking, Spring 2026. Project 1 - hosted on GitHub Pages.</p>
+    <div class="team-grid" style="grid-template-columns: minmax(220px, 360px);">
+      <div class="team-card">
+        <div class="team-avatar">&#127807;</div>
+        <div class="team-name">Hasmika Kesineni</div>
+        <div class="team-role">Solo - All Roles</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Hasmika Kesineni &nbsp;&mdash;&nbsp; Computer Networking Project 1 &nbsp;&mdash;&nbsp; Spring 2026</p>
+    <p style="margin-top: 0.5rem;"><a href="https://github.com">GitHub Repo</a></p>
+  </footer>
+
+</body>
+</html>
